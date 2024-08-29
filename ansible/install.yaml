@@ -1,0 +1,25 @@
+- hosts: servers, clients
+  remote_user: root
+  tasks:
+    - name: Check that Consul is installed
+      stat:
+        path: /usr/bin/consul
+      register: consul_bin
+    - name: Copy install scripts
+      copy:
+        src: ../scripts/
+        dest: /tmp/install
+      when: not consul_bin.stat.exists
+    - name: Run install scripts
+      shell: |
+        chmod +x /tmp/install/*
+        /tmp/install/base.sh
+        /tmp/install/docker.sh
+        /tmp/install/stack.sh
+      when: not consul_bin.stat.exists
+    - name: Enable services
+      shell: |
+        systemctl enable consul
+        systemctl enable nomad
+        systemctl enable vault
+      when: not consul_bin.stat.exists

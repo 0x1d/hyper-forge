@@ -1,0 +1,32 @@
+- hosts: servers
+  remote_user: root
+  tasks:
+    - name: Configure servers (base)
+      copy:
+        src: ../config/server/etc/
+        dest: /etc
+    - name: Configure servers (custom)
+      copy:
+        src: ../target/server/etc/
+        dest: /etc
+    - name: Restart services
+      shell: |
+        systemctl restart consul
+        systemctl restart nomad
+        systemctl restart vault
+- hosts: clients
+  remote_user: root
+  tasks:
+    - name: Configure clients (base)
+      copy:
+        src: ../config/client/etc/
+        dest: /etc
+    - name: Configure clients
+      copy:
+        src: ../target/client/etc/
+        dest: /etc
+    - name: Restart clients
+      shell: |
+        systemctl restart consul
+        systemctl restart nomad
+        systemctl restart vault
