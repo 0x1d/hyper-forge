@@ -1,4 +1,8 @@
 terraform {
+  backend "consul" {
+    scheme = "http"
+    path   = "terraform/hyper-forge"
+  }
   required_providers {
     proxmox = {
       source  = "bpg/proxmox"

@@ -9,9 +9,10 @@ set -e
 ## provision        Apply Terraform config
 ## install          Install stack on hosts
 ## configure        Configure hosts
-## update           Update packages on host and reboot
+## update           Update packages on hosts
 ## hosts <plabook>  Run playbook on hosts
 ## migrate_state    Migrate Terraform state
+
 
 source .env
 
