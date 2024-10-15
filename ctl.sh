@@ -6,13 +6,18 @@ set -e
 ##
 ## Usage: ./ctl.sh COMMAND
 ##
-## provision        Apply Terraform config
-## install          Install stack on hosts
-## configure        Configure hosts
-## update           Update packages on hosts
-## hosts <plabook>  Run playbook on hosts
-## migrate_state    Migrate Terraform state
-
+## machines
+##   apply            Provision machines
+##
+## system
+##   apply            Install and configure systems
+##   install          Install stack on hosts
+##   configure        Configure hosts
+##   update           Update packages on hosts
+##   hosts <plabook>  Run playbook on hosts
+##
+## platform
+##   apply            Apply platform services
 
 source .env
 
@@ -20,34 +25,66 @@ function info {
 	sed -n 's/^##//p' ctl.sh
 }
 
-function provision {
-	terraform init
-	terraform apply
+function machines {
+	function apply {
+		tf_apply machines
+	}
+	function destroy {
+		tf_destroy machines
+	}
+	${@:-info}
 }
 
-function install {
-	hosts install
+function system {
+	function apply {
+		tf_apply system
+		system install
+		system configure
+		system update
+	}
+	function install {
+		system ansible_run install
+	}
+
+	function configure {
+		system ansible_run configure
+	}
+
+	function update {
+		system ansible_run update
+	}
+
+	function restart {
+		system ansible_run restart
+	}
+
+	function ansible_run {
+		ANSIBLE_HOST_KEY_CHECKING=False \
+			ansible-playbook -i system/target/inventory.cfg system/ansible/$1.yaml
+	}
+	${@:-info}
 }
 
-function configure {
-	hosts configure
+function platform {
+	function apply {
+		tf_apply platform
+	}
+	${@:-info}
 }
 
-function update {
-	hosts update
+function tf_apply {
+	pushd $1
+		terraform init
+		terraform apply -var-file=../config.tfvars
+	popd
 }
 
-function hosts {
-	ansible_run $1
+function tf_destroy {
+	pushd $1
+		terraform destroy -var-file=../config.tfvars
+	popd
 }
 
-function migrate_state {
-	terraform init -migrate-state
-}
 
-function ansible_run {
-	ANSIBLE_HOST_KEY_CHECKING=False \
-		ansible-playbook -i target/inventory.cfg ansible/$1.yaml
-}
 
 ${@:-info}

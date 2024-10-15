@@ -1,0 +1,6 @@
+- hosts: servers, clients
+  remote_user: root
+  tasks:
+    - name: Reboot
+      ansible.builtin.reboot:
+        reboot_timeout: 3600

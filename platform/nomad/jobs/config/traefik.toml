@@ -1,0 +1,34 @@
+[entryPoints]
+    [entryPoints.http]
+    address = ":80"
+    [entryPoints.https]
+    address = ":443"    
+    [entryPoints.traefik]
+    address = ":8081"
+
+[api]
+    dashboard = true
+    insecure  = true
+
+# Enable Consul Catalog configuration backend
+[providers.consulCatalog]
+    prefix           = "traefik"
+    exposedByDefault = false
+    [providers.consulCatalog.endpoint]
+      address = "192.168.1.151:8500"
+      scheme  = "http"
+
+# Enable LetsEncrypt cert  resolver
+[certificatesResolvers.letsencrypt.acme]
+  email = "admin@dcentral.systems"
+  storage = "/letsencrypt/acme.json"
+  caServer = "https://acme-v02.api.letsencrypt.org/directory"
+  [certificatesResolvers.letsencrypt.acme.httpChallenge]
+    entryPoint = "http"
+
+[certificatesResolvers.hetzner.acme]
+  email = "admin@dcentral.systems"
+  storage = "/hetzner/acme.json"
+  [certificatesResolvers.hetzner.acme.dnsChallenge]
+    provider = "hetzner"
+    delayBeforeCheck = 30

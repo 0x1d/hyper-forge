@@ -13,11 +13,12 @@ Hyper-Forge is an opinionated homelab stack with all the funky stuff:
 
 This repo contains a collection of Terraform configurations, Ansible playbooks, and other tools that together form a complete infrastructure automation stack. The goal of this project is to provide a reproducible and version-controlled way to deploy and manage a complex infrastructure environment.
 
-Tools used:
+The stack is structured into multiple layers:
 
-- Terraform: Used for provisioning and managing nodes
-- Cloud-Init: Used for automating the initialization of nodes
-- Ansible: Used for automating the configuration of nodes
+- machines
+- system
+- platform
+- apps
 
 ## Prerequisites
 
@@ -34,28 +35,24 @@ export PROXMOX_VE_USERNAME="root@pam"
 export PROXMOX_VE_PASSWORD="<your-password>"
 export PROXMOX_VE_ENDPOINT="https://<pve-ip-addr>:8006/"
 export TF_VAR_ssh_public_key="~/.ssh/id_rsa.pub"
+export TF_VAR_dns_api_key="<cert-resolver-api-key>"
 ```
 
 1) Provision virtual machines on Proxmox  
 First, take a look at `machines.tf` and change the configuration as needed.  
 Then simply run:
 ```
-./ctl.sh provision
+./ctl.sh machines apply
 ```
 
-2) Install stack on all hosts
+2) Install and configure stack on all hosts
 ```
-./ctl.sh install
-```
-
-3) Configure stack on all hosts
-```
-./ctl.sh configure
+./ctl.sh system apply
 ```
 
-4) Update all packages and reboot
+2) Install platform services on Nomad
 ```
-./ctl.sh update
+./ctl.sh platform apply
 ```
 
 ## Migrate State to Consul
