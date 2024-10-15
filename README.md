@@ -50,9 +50,14 @@ Then simply run:
 ./ctl.sh system apply
 ```
 
-2) Install platform services on Nomad
+3) Install and configure platform services on Nomad
 ```
 ./ctl.sh platform apply
+```
+
+4) Install apps on Nomad
+```
+./ctl.sh apps apply
 ```
 
 ## Migrate State to Consul
@@ -75,7 +80,7 @@ terraform {
 Then migrate state to Consul:
 
 ```
-./ctl.sh migrate_state
+terraform init -migrate-state
 ```
 
 You can just revert back into your local state by deleting the Consul backend from your Terraform config and run `migrate_state` again.

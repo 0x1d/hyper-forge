@@ -18,6 +18,9 @@ set -e
 ##
 ## platform
 ##   apply            Apply platform services
+##
+## apps
+##   apply            Install apps
 
 source .env
 
@@ -68,6 +71,13 @@ function system {
 function platform {
 	function apply {
 		tf_apply platform
+	}
+	${@:-info}
+}
+
+function apps {
+	function apply {
+		tf_apply apps
 	}
 	${@:-info}
 }

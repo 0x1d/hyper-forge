@@ -91,10 +91,10 @@ job "ingress" {
         destination = "local/traefik.toml"
       }
 
-      #resources {
-      #  cpu    = 100
-      #  memory = 128
-      #}
+      resources {
+        cpu    = 100
+        memory = 200
+      }
     }
   }
 }

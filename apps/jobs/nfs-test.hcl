@@ -19,6 +19,10 @@ job "nfs-test" {
         volume = "test"
         destination = "/mnt/test"
       }
+      resources {
+        cpu    = 50
+        memory = 50
+      }
     }
   }
 }
