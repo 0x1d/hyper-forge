@@ -10,6 +10,7 @@ resource "terraform_data" "nas_test_folder" {
 
   connection {
     host = "192.168.1.3"
+    port = 2222
     user = "master"
     private_key = file("~/.ssh/id_ed25519")
     script_path = "/volume1/nomad/tf.sh"

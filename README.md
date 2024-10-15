@@ -7,7 +7,7 @@ Hyper-Forge is an opinionated homelab stack with all the funky stuff:
 - Service Discovery
 - Secrets Management
 - Identity and Access Management
-- Load Balancing
+- Ingress & Load Balancing
 - Monitoring
 - Backups
 
@@ -58,11 +58,7 @@ Then simply run:
 ./ctl.sh update
 ```
 
-## Ascendance of State
-
-If you like what you got, you may want to migrate your Terraform state to Consul.
-This will move your local Terraform state to Consul to make it distributed, so you can make changes to the infrastructure from anywhere.
-From there is no come back, your state will ascend into the infrastructure you just provisioned.  
+## Migrate State to Consul
 
 Configure in your `.env`:
 ```
@@ -85,8 +81,4 @@ Then migrate state to Consul:
 ./ctl.sh migrate_state
 ```
 
-Ok I lied; you can just revert back into your local state by deleting the Consul backend from your Terraform config and run `migrate_state` again.
-
-## Deployment of Apps
-
-As we're using Nomad as the workload orchestrator, we will also use Terraform to deploy our Nomad HCL deployment configs.
+You can just revert back into your local state by deleting the Consul backend from your Terraform config and run `migrate_state` again.

@@ -70,6 +70,7 @@ resource "proxmox_virtual_environment_vm" "node" {
 
   memory {
     dedicated = each.value.memory
+    floating = each.value.memory
   }
   stop_on_destroy = true
   lifecycle {

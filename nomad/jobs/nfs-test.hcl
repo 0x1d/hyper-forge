@@ -2,7 +2,7 @@ job "nfs-test" {
   datacenters = ["terra"]
   type = "service"
   group "server" {
-    count = 1
+    count = 3
     volume "test" {
       type = "csi"
       source = "nas-test"
