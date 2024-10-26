@@ -1,5 +1,7 @@
 # Hyper-Forge
 
+![overview](./docs/assets/Hyper-Forge.drawio.svg)
+
 Hyper-Forge is an opinionated homelab stack with all the funky stuff:
 
 - Hypervisor: Proxmox
@@ -30,6 +32,7 @@ The stack is structured into multiple layers:
 - a Hetzner Cloud API Key
 - Terraform
 - Ansible
+- jq
 
 ## Setup
 
@@ -44,7 +47,7 @@ export TF_VAR_dns_api_key="<cert-resolver-api-key>"
 ```
 
 1) Provision virtual machines on Proxmox and Hetzner  
-First, take a look at `config.tf` and change the configuration as needed.  
+First, take a look at `config.tfvar` and change the configuration as needed.  
 Then simply run:
 ```
 ./ctl.sh machines apply

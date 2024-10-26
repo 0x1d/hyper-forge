@@ -72,6 +72,9 @@ function network {
 		tf_apply network
 		ansible_run network configure
 	}
+	function update {
+		ansible_run network update
+	}
 	${@:-info}
 }
 

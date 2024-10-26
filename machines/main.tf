@@ -1,8 +1,4 @@
 terraform {
-  #backend "consul" {
-  #  scheme = "http"
-  #  path   = "terraform/hyper-forge"
-  #}
   required_providers {
     proxmox = {
       source  = "bpg/proxmox"
@@ -11,10 +7,6 @@ terraform {
     hcloud = {
       source  = "hetznercloud/hcloud"
       version = "1.48.1"
-    }
-    wireguard = {
-      source  = "OJFord/wireguard"
-      version = "0.3.1"
     }
   }
 }
@@ -27,8 +19,6 @@ provider "proxmox" {
     agent = true
   }
 }
-
-provider "wireguard" {}
 
 module "cloud_base" {
   source = "./hetzner/base"

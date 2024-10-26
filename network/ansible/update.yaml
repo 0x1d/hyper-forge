@@ -1,0 +1,10 @@
+- hosts: wireguard_server, wireguard_router
+  remote_user: root
+  tasks:
+    - name: Update system
+      shell: |
+        apt update
+        apt -y upgrade
+    - name: Reboot
+      ansible.builtin.reboot:
+        reboot_timeout: 3600
