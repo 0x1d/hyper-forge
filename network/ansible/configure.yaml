@@ -1,0 +1,25 @@
+- hosts: wireguard_server
+  remote_user: root
+  tasks:
+    - name: Configure wireguard-server
+      copy:
+        src: ../target/wireguard/server/etc/
+        dest: /etc
+    - name: Restart Wireguard
+      shell: |
+        systemctl enable wg-quick@wg0
+        wg-quick down wg0
+        wg-quick up wg0
+
+- hosts: wireguard_router
+  remote_user: root
+  tasks:
+    - name: Configure wireguard-router
+      copy:
+        src: ../target/wireguard/router/etc/
+        dest: /etc
+    - name: Restart Wireguard
+      shell: |
+        systemctl enable wg-quick@wg0
+        wg-quick down wg0
+        wg-quick up wg0

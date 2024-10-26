@@ -19,6 +19,9 @@ set -e
 ## platform
 ##   apply            Apply platform services
 ##
+## network
+##   apply            Apply network configuration
+##
 ## apps
 ##   apply            Install apps
 
@@ -46,24 +49,28 @@ function system {
 		system update
 	}
 	function install {
-		system ansible_run install
+		ansible_run system install
 	}
 
 	function configure {
-		system ansible_run configure
+		tf_apply system
+		ansible_run system configure
 	}
 
 	function update {
-		system ansible_run update
+		ansible_run system update
 	}
 
 	function restart {
-		system ansible_run restart
+		ansible_run system restart
 	}
+	${@:-info}
+}
 
-	function ansible_run {
-		ANSIBLE_HOST_KEY_CHECKING=False \
-			ansible-playbook -i system/target/inventory.cfg system/ansible/$1.yaml
+function network {
+	function apply {
+		tf_apply network
+		ansible_run network configure
 	}
 	${@:-info}
 }
@@ -80,6 +87,11 @@ function apps {
 		tf_apply apps
 	}
 	${@:-info}
+}
+
+function ansible_run {
+	ANSIBLE_HOST_KEY_CHECKING=False \
+		ansible-playbook -i $1/target/inventory.cfg $1/ansible/$2.yaml
 }
 
 function tf_apply {

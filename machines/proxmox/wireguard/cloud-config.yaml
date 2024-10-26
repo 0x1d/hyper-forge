@@ -1,0 +1,17 @@
+#cloud-config
+users:
+  - default
+  - name: root
+    shell: /bin/bash
+    ssh_authorized_keys:
+      - ${ssh_public_key}
+    sudo: ALL=(ALL) NOPASSWD:ALL
+package_update: true
+package_upgrade: true
+packages:
+  - wireguard
+  - wireguard-tools
+runcmd:
+  - echo "net.ipv4.ip_forward=1" >> /etc/sysctl.conf
+  - sysctl --system
+  - systemctl enable --now wg-quick@wg0

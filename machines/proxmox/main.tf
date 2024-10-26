@@ -7,31 +7,8 @@ terraform {
   }
 }
 
-variable "image" {
-  type = string
-  default = "https://cloud-images.ubuntu.com/noble/current/noble-server-cloudimg-amd64.img"
-}
-
-variable "ssh_keys" {
-  type = list(string)
-  default = []
-}
-
-variable "machines" {
-  type = list(object({
-    id = number
-    name = string
-    ip = string
-    gateway = string
-    disk_size = number
-    cores = number
-    memory = number
-  }))
-  default = []
-}
-
 resource "proxmox_virtual_environment_vm" "node" {
-  for_each  = { for machine in var.machines : machine.name => machine}
+  for_each  = { for machine in var.machines : machine.name => machine }
   vm_id     = each.value.id
   name      = each.value.name
   node_name = "pve"
@@ -47,7 +24,7 @@ resource "proxmox_virtual_environment_vm" "node" {
 
     user_account {
       username = "root"
-      keys     = var.ssh_keys
+      keys     = [trimspace(var.ssh_key)]
     }
   }
 
@@ -70,11 +47,11 @@ resource "proxmox_virtual_environment_vm" "node" {
 
   memory {
     dedicated = each.value.memory
-    floating = each.value.memory
+    floating  = each.value.memory
   }
   stop_on_destroy = true
   lifecycle {
-    ignore_changes = [ cpu[0].architecture ]
+    ignore_changes = [cpu[0].architecture]
   }
 }
 
@@ -82,6 +59,6 @@ resource "proxmox_virtual_environment_download_file" "ubuntu_cloud_image" {
   content_type = "iso"
   datastore_id = "local"
   node_name    = "pve"
-  url = var.image
+  url          = var.image
 }
 

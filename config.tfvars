@@ -50,3 +50,15 @@ machines = {
     memory    = 2048
   }]
 }
+wireguard = {
+  network         = "192.168.10.0/24"
+  edge_network    = "192.168.1.0/24"
+  edge_gateway_ip = "192.168.1.1"
+  edge_router_ip  = "192.168.1.150"
+  server_ip       = "192.168.10.1"
+  router_ip       = "192.168.10.2"
+  clients = [{
+    name      = "client1"
+    client_ip = "192.168.10.10/32"
+  }]
+}
