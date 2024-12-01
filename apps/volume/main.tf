@@ -1,24 +1,24 @@
-# It can sometimes be helpful to wait for a particular plugin to be available
+# wait for NFS plugin to be available
 data "nomad_plugin" "nfs" {
   plugin_id        = "nfs"
   wait_for_healthy = true
 }
 
- # create the folder on the remote host
+# create the folder on the remote host
 resource "terraform_data" "nas_test_folder" {
   #triggers_replace = ...
 
   connection {
-    host = "192.168.1.3"
-    port = 2222
-    user = "master"
-    private_key = file("~/.ssh/id_ed25519")
+    host        = var.nfs.host
+    port        = var.nfs.port
+    user        = var.nfs.user
+    private_key = var.nfs.private_key
     script_path = "/volume1/nomad/tf.sh"
   }
 
   provisioner "remote-exec" {
     inline = [
-      "mkdir -p /volume1/nomad/test"
+      "mkdir -p ${var.volume.path}"
     ]
   }
 }
@@ -32,11 +32,11 @@ resource "nomad_csi_volume_registration" "nfs_test_volume" {
   }
 
   plugin_id    = "nfs"
-  volume_id    = "nas-test"
-  external_id  = "nas-test"
-  name         = "nas-test"
-  capacity_min = "10GiB"
-  capacity_max = "20GiB"
+  volume_id    = var.volume.id
+  external_id  = var.volume.id
+  name         = var.volume.id
+  capacity_min = var.volume.capacity_min
+  capacity_max = var.volume.capacity_max
 
   capability {
     access_mode     = "multi-node-multi-writer"
@@ -44,15 +44,14 @@ resource "nomad_csi_volume_registration" "nfs_test_volume" {
   }
 
   mount_options {
-    fs_type = "nfs"
-    mount_flags = [ "timeo=30", "intr", "vers=3", "_netdev" , "nolock" ]
+    fs_type     = "nfs"
+    mount_flags = ["timeo=30", "intr", "vers=3", "_netdev", "nolock"]
 
   }
 
-
   context = {
-    server = "192.168.1.3"
-    share = "/volume1/nomad/test"
+    server           = var.nfs.host
+    share            = var.volume.path
     mountPermissions = "0"
   }
 }

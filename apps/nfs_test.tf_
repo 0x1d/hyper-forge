@@ -1,0 +1,15 @@
+module "volume_test" {
+  source = "./volume/"
+  nfs    = local.nfs
+  volume = {
+    id           = "nfs-test"
+    path         = "/volume1/nomad/test"
+    capacity_min = "10GiB"
+    capacity_max = "20GiB"
+  }
+}
+
+resource "nomad_job" "nfs_test_jobs" {
+  jobspec    = file("${path.module}/jobs/nfs-test.hcl")
+  depends_on = [module.volume_test]
+}

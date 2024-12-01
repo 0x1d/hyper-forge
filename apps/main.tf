@@ -9,11 +9,11 @@ terraform {
 
 provider "nomad" {}
 
-module "volumes" {
-  source = "./volumes/"
-}
-
-resource "nomad_job" "nfs_test_jobs" {
-  jobspec    = file("${path.module}/jobs/nfs-test.hcl")
-  depends_on = [module.volumes]
+locals {
+  nfs = {
+    host        = "192.168.1.3"
+    port        = 2222
+    private_key = file("~/.ssh/id_ed25519")
+    user        = "master"
+  }
 }

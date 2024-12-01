@@ -5,7 +5,7 @@ job "nfs-test" {
     count = 3
     volume "test" {
       type = "csi"
-      source = "nas-test"
+      source = "nfs-test"
       access_mode = "multi-node-multi-writer"
       attachment_mode = "file-system"
     }
