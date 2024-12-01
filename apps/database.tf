@@ -41,3 +41,12 @@ resource "nomad_job" "pgadmin4" {
   })
   depends_on = [nomad_job.postgres]
 }
+
+resource "nomad_job" "metabase" {
+  jobspec = templatefile("${path.module}/jobs/metabase.hcl", {
+    postgres_user     = local.postgres.user
+    postgres_password = local.postgres.password
+    postgres_host     = "postgres.service.consul"
+  })
+  depends_on = [nomad_job.postgres]
+}
