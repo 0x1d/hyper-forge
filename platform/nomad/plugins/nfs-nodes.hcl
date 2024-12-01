@@ -20,7 +20,7 @@ job "plugin-nfs-nodes" {
         mount_dir = "/csi"
       }
       resources {
-        memory = 10
+        memory = 50
       }
     }
   }
