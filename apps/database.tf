@@ -27,20 +27,23 @@ resource "nomad_job" "postgres" {
     postgres_user      = local.postgres.user
     postgres_password  = local.postgres.password
     postgres_volume_id = local.postgres.volume
+    postgres_database  = local.postgres.database
+    pgadmin_email      = local.pgadmin.email
+    pgadmin_password   = local.pgadmin.password
   })
   depends_on = [module.postgres_volume]
 }
 
-resource "nomad_job" "pgadmin4" {
-  jobspec = templatefile("${path.module}/jobs/pgadmin4.hcl", {
-    postgres_user     = local.postgres.user
-    postgres_password = local.postgres.password
-    postgres_database = local.postgres.database
-    pgadmin_email     = local.pgadmin.email
-    pgadmin_password  = local.pgadmin.password
-  })
-  depends_on = [nomad_job.postgres]
-}
+#resource "nomad_job" "pgadmin4" {
+#  jobspec = templatefile("${path.module}/jobs/pgadmin4.hcl", {
+#    postgres_user     = local.postgres.user
+#    postgres_password = local.postgres.password
+#    postgres_database = local.postgres.database
+#    pgadmin_email     = local.pgadmin.email
+#    pgadmin_password  = local.pgadmin.password
+#  })
+#  depends_on = [nomad_job.postgres]
+#}
 
 resource "nomad_job" "metabase" {
   jobspec = templatefile("${path.module}/jobs/metabase.hcl", {

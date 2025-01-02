@@ -24,4 +24,5 @@ connect {
 
 ports {
   grpc = 8502
+  #dns = 53
 }
