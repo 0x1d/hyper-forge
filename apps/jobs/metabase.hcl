@@ -8,7 +8,7 @@ job "metabase" {
     task "metabase" {
       driver = "docker"
       config {
-        image = "metabase/metabase"
+        image = "metabase/metabase:v0.52.5"
         network_mode = "host"
         port_map {
           mb = 3000
@@ -31,7 +31,7 @@ job "metabase" {
 
       resources {
         cpu = 500
-        memory = 1024
+        memory = 2048
         network {
           port  "mb"  {
             static = 3000
@@ -40,8 +40,9 @@ job "metabase" {
       }
       service {
         name = "metabase"
-        tags = ["metabase", "database"]
         port = "mb"
+        enable_tag_override = true
+        tags = ${tags}
 
         check {
           name     = "alive"

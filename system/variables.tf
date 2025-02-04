@@ -1,3 +1,6 @@
 variable "machines" {
 
 }
+variable "domains" {
+
+}

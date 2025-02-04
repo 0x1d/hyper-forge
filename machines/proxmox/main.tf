@@ -11,7 +11,7 @@ resource "proxmox_virtual_environment_vm" "node" {
   for_each  = { for machine in var.machines : machine.name => machine }
   vm_id     = each.value.id
   name      = each.value.name
-  node_name = "pve"
+  node_name = each.value.node
 
   initialization {
 
@@ -58,7 +58,7 @@ resource "proxmox_virtual_environment_vm" "node" {
 resource "proxmox_virtual_environment_download_file" "ubuntu_cloud_image" {
   content_type = "iso"
   datastore_id = "local"
-  node_name    = "pve"
+  node_name    = "ms-01"
   url          = var.image
 }
 

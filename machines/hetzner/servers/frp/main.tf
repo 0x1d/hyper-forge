@@ -1,12 +1,14 @@
 variable "ip" {}
-variable "frps_subdomain_host"{}
+variable "frps_subdomain_host" {
+  default = ""
+}
 variable "frps_port" {}
 variable "frps_auth_token" {}
 variable "frps_image" {
-  default = "wirelos/frps:0.46.1-amd64"
+  default = "wirelos/frps:0.61.1"
 }
 variable "proxy_ports" {
-  default =  ["2222", "7000"]
+  default = ["2222", "7000"]
 }
 
 # ---------------------------------------------------------------------

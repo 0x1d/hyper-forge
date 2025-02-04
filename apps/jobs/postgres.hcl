@@ -25,7 +25,12 @@ job "database" {
         port_map {
           db = 5432
         }
-
+        # intended for maintenance
+        #command = "/bin/bash"
+        #args = [
+        #  "-c",
+        #  "sleep infinity"
+        #]
       }
       env {
           POSTGRES_USER="${postgres_user}"

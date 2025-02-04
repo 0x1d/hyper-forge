@@ -4,10 +4,15 @@ terraform {
       source  = "hashicorp/nomad"
       version = "2.3.1"
     }
+    consul = {
+      source  = "hashicorp/consul"
+      version = "2.21.0"
+    }
   }
 }
 
 provider "nomad" {}
+provider "consul" {}
 
 locals {
   nfs = {

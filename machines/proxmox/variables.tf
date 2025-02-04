@@ -16,6 +16,7 @@ variable "machines" {
     disk_size = number
     cores     = number
     memory    = number
+    node      = string
   }))
   default = []
 }

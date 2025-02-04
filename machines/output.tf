@@ -3,5 +3,6 @@ output "cloud_network" {
     mainnet             = module.cloud_network.mainnet
     subnet              = module.cloud_network.server_subnet
     wireguard_server_ip = module.cloud_network.wireguard_server_ip
+    ingress_ip          = module.cloud_network.ingress_ip
   }
 }

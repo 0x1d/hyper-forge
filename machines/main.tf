@@ -33,6 +33,7 @@ module "cloud_servers" {
   source       = "./hetzner/servers"
   ssh_key      = module.cloud_base.terraform_key
   wireguard_ip = module.cloud_network.wireguard_server_ip
+  ingress_ip   = module.cloud_network.ingress_ip
   network      = module.cloud_network.mainnet
   machines     = []
 }

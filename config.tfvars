@@ -1,3 +1,7 @@
+domains = [
+  "metabase.ingress.dcentral.systems",
+  "nc.dcentral.systems"
+]
 machines = {
   servers = [{
     id        = 151
@@ -7,6 +11,7 @@ machines = {
     disk_size = 20
     cores     = 1
     memory    = 1024
+    node      = "ms-01"
     }, {
     id        = 152
     name      = "citadel-2"
@@ -15,6 +20,7 @@ machines = {
     disk_size = 20
     cores     = 1
     memory    = 1024
+    node      = "ms-01"
     }, {
     id        = 153
     name      = "citadel-3"
@@ -23,6 +29,7 @@ machines = {
     disk_size = 20
     cores     = 1
     memory    = 1024
+    node      = "ms-01"
   }]
   clients = [{
     id        = 161
@@ -31,7 +38,8 @@ machines = {
     gateway   = "192.168.1.1"
     disk_size = 100
     cores     = 2
-    memory    = 2048
+    memory    = 8192
+    node      = "ms-01"
     }, {
     id        = 162
     name      = "legion-2"
@@ -39,7 +47,8 @@ machines = {
     gateway   = "192.168.1.1"
     disk_size = 100
     cores     = 2
-    memory    = 2048
+    memory    = 8192
+    node      = "ms-01"
     }, {
     id        = 163
     name      = "legion-3"
@@ -47,7 +56,17 @@ machines = {
     gateway   = "192.168.1.1"
     disk_size = 100
     cores     = 2
-    memory    = 2048
+    memory    = 8192
+    node      = "ms-01"
+    }, {
+    id        = 164
+    name      = "legion-4"
+    ip        = "192.168.1.164"
+    gateway   = "192.168.1.1"
+    disk_size = 100
+    cores     = 2
+    memory    = 8192
+    node      = "ms-01"
   }]
 }
 wireguard = {

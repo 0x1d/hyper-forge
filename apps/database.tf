@@ -50,6 +50,11 @@ resource "nomad_job" "metabase" {
     postgres_user     = local.postgres.user
     postgres_password = local.postgres.password
     postgres_host     = "postgres.service.consul"
+    tags = templatefile("${path.module}/jobs/traefik_tags.tpl", {
+      router        = "metabase"
+      cert_resolver = "hetzner"
+      url           = "metabase.ingress.dcentral.systems"
+    })
   })
   depends_on = [nomad_job.postgres]
 }

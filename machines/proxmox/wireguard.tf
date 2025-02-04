@@ -29,7 +29,7 @@ resource "proxmox_virtual_environment_vm" "wireguard_gateway" {
 
   disk {
     datastore_id = "local-lvm"
-    file_id      = proxmox_virtual_environment_download_file.ubuntu_cloud_image.id
+    file_id      = proxmox_virtual_environment_download_file.ubuntu_cloud_image_pve.id
     interface    = "virtio0"
     iothread     = true
     discard      = "on"
@@ -40,3 +40,11 @@ resource "proxmox_virtual_environment_vm" "wireguard_gateway" {
     bridge = "vmbr0"
   }
 }
+
+resource "proxmox_virtual_environment_download_file" "ubuntu_cloud_image_pve" {
+  content_type = "iso"
+  datastore_id = "local"
+  node_name    = "pve"
+  url          = var.image
+}
+

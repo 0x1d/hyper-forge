@@ -17,16 +17,16 @@ resource "hcloud_network_subnet" "servers" {
 # ---------------------------------------------------------------------
 # Reserved IP Addresses
 # ---------------------------------------------------------------------
-#resource "hcloud_primary_ip" "ingress" {
-#  name          = "ingress"
-#  type          = "ipv4"
-#  assignee_type = "server"
-#  datacenter    = "fsn1-dc14"
-#  auto_delete   = true
-#  labels = {
-#    "role" : "reverse-proxy"
-#  }
-#}
+resource "hcloud_primary_ip" "ingress" {
+  name          = "ingress"
+  type          = "ipv4"
+  assignee_type = "server"
+  datacenter    = "fsn1-dc14"
+  auto_delete   = false
+  labels = {
+    "role" : "reverse-proxy"
+  }
+}
 resource "hcloud_primary_ip" "wireguard" {
   name          = "wireguard"
   type          = "ipv4"
