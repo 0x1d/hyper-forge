@@ -1,0 +1,9 @@
+- hosts: clients
+  remote_user: root
+  tasks:
+    - name: Restart clients
+      shell: |
+        systemctl restart consul
+        systemctl restart nomad
+        systemctl restart vault
+        systemctl restart systemd-resolved

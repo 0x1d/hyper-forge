@@ -13,7 +13,11 @@ resource "nomad_job" "appsmith" {
   jobspec = templatefile("${path.module}/jobs/appsmith.hcl", {
     appsmith_volume_id = "appsmith"
     appsmith_image     = "index.docker.io/appsmith/appsmith-ce:v1.8.15"
-    #appsmith_image = "index.docker.io/appsmith/appsmith-ce:v1.54"
+    tags = templatefile("${path.module}/jobs/traefik_tags.tpl", {
+      router        = "appsmith"
+      cert_resolver = "hetzner"
+      url           = "appsmith.ingress.dcentral.systems"
+    })
   })
   depends_on = [module.appsmith_volume]
 }

@@ -1,32 +1,18 @@
-job "flows" {
+job "vaultwarden" {
   datacenters = ["terra"]
   type = "service"
-  group "node-red" {
+  group "vaultwarden" {
     max_client_disconnect  = "720h"
-
+    
     network {
-      mode = "bridge"
       port "http" {
-        to = 1880
+        to = 80
       }
     }
-    service {
-      name = "node-red"
-      port = "http"
-      connect {
-        sidecar_service {
-          proxy {
-            upstreams {
-              destination_name = "postgres"
-              local_bind_port = 5432
-            }
-          }
-        }
-      }
-    }
-    volume "nodered_data" {
+      
+    volume "vaultwarden_data" {
       type = "csi"
-      source = "${nodered_volume_id}"
+      source = "${vaultwarden_volume_id}"
       access_mode = "multi-node-multi-writer"
       attachment_mode = "file-system"
     }
@@ -34,14 +20,14 @@ job "flows" {
     task "prepare-volume" {
       driver = "docker"
       volume_mount {
-        volume      = "nodered_data"
+        volume      = "vaultwarden_data"
         destination = "/data"
         read_only   = false
       }
       config {
         image        = "busybox:latest"
         command      = "sh"
-        args         = ["-c", "chown -R 1000:1000 /data && chmod 777 /data"]
+        args         = ["-c", "chown -R 0:0 /data && chmod 777 /data"]
       }
       resources {
         cpu    = 100
@@ -54,11 +40,11 @@ job "flows" {
       }
     }
 
-    task "node-red" {
+    task "vaultwarden" {
       driver = "docker"
-      user = "1000"
+      user = "0"
       service {
-        name = "node-red"
+        name = "vaultwarden"
         port = "http"
 
         check {
@@ -67,9 +53,10 @@ job "flows" {
           interval = "10s"
           timeout  = "2s"
         }
+        tags = ${tags}
       }
       volume_mount {
-        volume = "nodered_data"
+        volume = "vaultwarden_data"
         destination = "/data"
       }
       resources {
@@ -78,9 +65,13 @@ job "flows" {
       }
       env {
         TZ = "Europe/Zurich"
+        WEBSOCKET_ENABLED = true
+        ADMIN_TOKEN = "${vaultwarden_admin_token}"
+        SIGNUPS_ALLOWED = false
       }
       config {
-        image = "${nodered_image}"
+        image = "${vaultwarden_image}"
+        ports = ["http"]
       }
     }
 

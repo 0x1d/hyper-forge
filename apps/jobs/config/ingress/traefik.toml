@@ -21,14 +21,14 @@
 # Enable LetsEncrypt cert  resolver
 [certificatesResolvers.letsencrypt.acme]
   email = "admin@dcentral.systems"
-  storage = "/letsencrypt/acme.json"
+  storage = "/traefik/letsencrypt/acme.json"
   caServer = "https://acme-v02.api.letsencrypt.org/directory"
   [certificatesResolvers.letsencrypt.acme.httpChallenge]
     entryPoint = "http"
 
 [certificatesResolvers.hetzner.acme]
   email = "admin@dcentral.systems"
-  storage = "/hetzner/acme.json"
+  storage = "/traefik/hetzner/acme.json"
   [certificatesResolvers.hetzner.acme.dnsChallenge]
     provider = "hetzner"
     delayBeforeCheck = 30

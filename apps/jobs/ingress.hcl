@@ -12,6 +12,10 @@ variable "dns_api_key" {
   type = string
   default = ""
 }
+variable "traefik_volume_id" {
+  type = string
+  default = "traefik"
+}
 
 job "ingress" {
   datacenters = ["terra"]
@@ -25,6 +29,15 @@ job "ingress" {
   group "web" {
     count = 1
     max_client_disconnect  = "720h"
+
+    volume "traefik_data" {
+      type = "csi"
+      source = var.traefik_volume_id
+      access_mode = "multi-node-multi-writer"
+      attachment_mode = "file-system"
+    }
+
+
     network {
       port "http" {
         static = 8080
@@ -51,6 +64,28 @@ job "ingress" {
       
     }
 
+    task "prepare-volume" {
+      driver = "docker"
+      volume_mount {
+        volume      = "traefik_data"
+        destination = "/traefik"
+        read_only   = false
+      }
+      config {
+        image        = "busybox:latest"
+        command      = "sh"
+        args         = ["-c", "chown 0:0 /traefik && chmod 777 /traefik"]
+      }
+      resources {
+        cpu    = 100
+        memory = 64
+      }
+      lifecycle {
+        hook    = "prestart"
+        sidecar = false
+      }
+    }
+
     task "proxy" {
       driver = "docker"
       config {
@@ -71,7 +106,7 @@ job "ingress" {
 
     task "traefik" {
       driver = "docker"
-
+      user = "0"
       env {
         HETZNER_API_KEY = var.dns_api_key
       }
@@ -79,12 +114,13 @@ job "ingress" {
         image        = "traefik:3.2"
         network_mode = "host"
         volumes = [
-          "/var/traefik/letsencrypt:/letsencrypt",
-          "/var/traefik/hetzner:/hetzner",
           "local/traefik.toml:/etc/traefik/traefik.toml",
         ]
       }
-
+      volume_mount {
+        volume = "traefik_data"
+        destination = "/traefik"
+      }
       template {
         data = var.traefik_toml
         destination = "local/traefik.toml"

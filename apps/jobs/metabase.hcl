@@ -5,23 +5,40 @@ job "metabase" {
   group "metabase" {
     count = 1
 
+    network {
+      mode = "bridge"
+      port "mb" {
+        to = 3000
+      }
+    }
+
+    service {
+      name = "metabase"
+      port = "mb"
+      connect {
+        sidecar_service {
+          proxy {
+            upstreams {
+              destination_name = "postgres"
+              local_bind_port = 5432
+            }
+          }
+        }
+      }
+    }
+
     task "metabase" {
       driver = "docker"
       config {
         image = "metabase/metabase:v0.52.5"
-        network_mode = "host"
-        port_map {
-          mb = 3000
-        }
-
       }
       env {
           MB_DB_TYPE="postgres"
           MB_DB_DBNAME="metabase"
+          MB_DB_HOST="localhost"
           MB_DB_PORT=5432
           MB_DB_USER="${postgres_user}"
           MB_DB_PASS="${postgres_password}"
-          MB_DB_HOST="${postgres_host}"
       }
 
       logs {
@@ -32,14 +49,9 @@ job "metabase" {
       resources {
         cpu = 500
         memory = 2048
-        network {
-          port  "mb"  {
-            static = 3000
-          }
-        }
       }
       service {
-        name = "metabase"
+        name = "metabase-internal"
         port = "mb"
         enable_tag_override = true
         tags = ${tags}

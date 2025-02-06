@@ -10,6 +10,14 @@ job "database" {
   group "postgres" {
     count = 1
 
+    network {
+      mode = "bridge"
+      #port "db" {
+      #  static = 5432
+      #  to = 5432
+      #}
+    }
+
     volume "pgdata" {
       type = "csi"
       source = "${postgres_volume_id}"
@@ -17,14 +25,23 @@ job "database" {
       attachment_mode = "file-system"
     }
 
+    service {
+      name = "postgres"
+      tags = ["postgres", "database"]
+      port = "5432"
+      connect {
+        sidecar_service {}
+      }
+    }
+
     task "postgres" {
       driver = "docker"
       config {
         image = "postgres:17"
-        network_mode = "host"
-        port_map {
-          db = 5432
-        }
+        #network_mode = "host"
+        #port_map {
+        #  db = 5432
+        #}
         # intended for maintenance
         #command = "/bin/bash"
         #args = [
@@ -51,23 +68,11 @@ job "database" {
       resources {
         cpu = 500
         memory = 512
-        network {
-          port  "db"  {
-            static = 5432
-          }
-        }
-      }
-      service {
-        name = "postgres"
-        tags = ["postgres", "database"]
-        port = "db"
-
-        check {
-          name     = "alive"
-          type     = "tcp"
-          interval = "10s"
-          timeout  = "2s"
-        }
+        #network {
+        #  port  "db"  {
+        #    static = 5432
+        #  }
+        #}
       }
     }
     restart {
@@ -82,14 +87,33 @@ job "database" {
   group "pgadmin4" {
     count = 1
 
+    network {
+      mode = "bridge"
+      port "ui" {
+        to = 5050
+      }
+    }
+
+
+    service {
+      name = "pgadmin"
+      port = "ui"
+      connect {
+        sidecar_service {
+          proxy {
+            upstreams {
+              destination_name = "postgres"
+              local_bind_port = 5432
+            }
+          }
+        }
+      }
+    }
+
     task "pgadmin4" {
       driver = "docker"
       config {
         image = "dpage/pgadmin4"
-        network_mode = "host"
-        port_map {
-          ui = 5050
-        }
         volumes = [
           "local/servers.json:/servers.json",
           "local/servers.passfile:/root/.pgpass"
@@ -114,9 +138,9 @@ EOH
       "Name": "Local Server",
       "Group": "Server Group 1",
       "Port": 5432,
-      "Username": "root",
+      "Username": "postgres",
       "PassFile": "/root/.pgpass",
-      "Host": "postgres.service.consul",
+      "Host": "localhost",
       "SSLMode": "disable",
       "MaintenanceDB": "postgres"
     }
@@ -140,15 +164,9 @@ EOH
       resources {
         cpu = 250
         memory = 256
-        network {
-          mbits = 10
-          port  "ui"  {
-            static = 5050
-          }
-        }
       }
       service {
-        name = "pgadmin"
+        name = "pgadmin-internal"
         tags = [ "urlprefix-/pgadmin strip=/pgadmin"]
         port = "ui"
 

@@ -5,7 +5,7 @@ data "nomad_plugin" "nfs" {
 }
 
 # create the folder on the remote host
-resource "terraform_data" "nas_test_folder" {
+resource "terraform_data" "nfs_folder" {
   #triggers_replace = ...
 
   connection {
@@ -24,8 +24,8 @@ resource "terraform_data" "nas_test_folder" {
 }
 
 # create the volume on Nomad
-resource "nomad_csi_volume_registration" "nfs_test_volume" {
-  depends_on = [data.nomad_plugin.nfs, terraform_data.nas_test_folder]
+resource "nomad_csi_volume_registration" "nfs_volume" {
+  depends_on = [data.nomad_plugin.nfs, terraform_data.nfs_folder]
 
   lifecycle {
     prevent_destroy = false

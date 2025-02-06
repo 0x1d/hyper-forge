@@ -4,7 +4,29 @@ job "appsmith" {
   
   group "appsmith" {
     max_client_disconnect  = "720h"
-    
+
+    network {
+      mode = "bridge"
+      port "http" {
+        to = 80
+      }
+    }
+
+    service {
+      name = "appsmith"
+      port = "http"
+      connect {
+        sidecar_service {
+          proxy {
+            upstreams {
+              destination_name = "postgres"
+              local_bind_port = 5432
+            }
+          }
+        }
+      }
+    }
+
     volume "appsmith_data" {
       type = "csi"
       source = "${appsmith_volume_id}"
@@ -38,23 +60,9 @@ job "appsmith" {
       driver = "docker"
       user = "0"
       service {
-        name = "appsmith"
+        name = "appsmith-internal"
         port = "http"
-
-        check {
-          type     = "http"
-          path     = "/"
-          interval = "10s"
-          timeout  = "2s"
-        }
-        #tags = [
-        #  "traefik.enable=true",
-        #  "traefik.http.routers.appsmith.rule=Host(`....`)",
-        #  "traefik.http.routers.appsmith.tls=true",
-        #  "traefik.http.routers.appsmith.tls.certresolver=hetzner",
-        #  "traefik.http.middlewares.appsmith-auth.basicauth.users=...",
-        #  "traefik.http.routers.appsmith.middlewares=appsmith-auth"
-        #]
+        tags = ${tags}
       }
       volume_mount {
         volume = "appsmith_data"
@@ -63,21 +71,13 @@ job "appsmith" {
       resources {
         cpu    = 1000
         memory = 1500
-        network {
-          port "http" {
-            static = 80 # or map to 8080 and comment out network_mode
-          }
-        }
       }
       env {
         TZ = "Europe/Zurich"
+        APPSMITH_SIGNUP_DISABLED = true
       }
       config {
         image = "${appsmith_image}"
-        network_mode = "host"
-        port_map {
-          http = 80
-        }
       }
     }
 
