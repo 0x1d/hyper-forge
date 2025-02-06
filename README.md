@@ -55,17 +55,6 @@ Then simply run:
 Give the machines some time to bootstrap after the apply finishes, some of them 
 will run cloud-init install various packages on the machines.  
 
-After that you want to expose some variables from the state for the next provisioning steps by adding following variables to your `.env` file:  
-```
-export TF_VAR_wireguard_server_ip="$(terraform -chdir=machines output -json cloud_network | jq .wireguard_server_ip.ip_address -r)"
-
-export TF_VAR_cloud_subnet_range="$(terraform -chdir=machines output -json cloud_network | jq .subnet.ip_range -r)"
-
-export TF_VAR_ingress_ip="$(terraform -chdir=machines output -json cloud_network | jq .ingress_ip.ip_address -r)"
-
-export TF_VAR_ingress_auth_token="$(terraform -chdir=machines output -json | jq .ingress_auth_token.value -r)"
-```
-
 2) Install and configure stack on all hosts
 ```
 ./ctl.sh system apply

@@ -43,6 +43,7 @@ function machines {
 
 function system {
 	function apply {
+		source .env.machines
 		tf_apply system
 		system install
 		system configure
@@ -69,6 +70,7 @@ function system {
 
 function network {
 	function apply {
+		source .env.machines
 		tf_apply network
 		ansible_run network configure
 	}
@@ -80,6 +82,7 @@ function network {
 
 function platform {
 	function apply {
+		source .env.machines
 		tf_apply platform
 	}
 	${@:-info}
@@ -87,6 +90,7 @@ function platform {
 
 function apps {
 	function apply {
+		source .env.machines
 		tf_apply apps
 	}
 	${@:-info}
