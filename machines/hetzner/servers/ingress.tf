@@ -22,6 +22,7 @@ resource "hcloud_server" "reverse_proxy" {
 
   network {
     network_id = var.network.id
+    alias_ips  = []
   }
   public_net {
     ipv4 = var.ingress_ip.id
@@ -31,4 +32,9 @@ resource "hcloud_server" "reverse_proxy" {
 output "frpc_ini" {
   sensitive = true
   value     = module.frps.client_config
+}
+
+output "frp_auth_token" {
+  sensitive = true
+  value     = random_password.frp_auth_token.result
 }

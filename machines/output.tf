@@ -6,3 +6,8 @@ output "cloud_network" {
     ingress_ip          = module.cloud_network.ingress_ip
   }
 }
+
+output "ingress_auth_token" {
+  sensitive = true
+  value     = module.cloud_servers.frp_auth_token
+}
