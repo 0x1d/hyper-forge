@@ -12,10 +12,6 @@ job "database" {
 
     network {
       mode = "bridge"
-      #port "db" {
-      #  static = 5432
-      #  to = 5432
-      #}
     }
 
     volume "pgdata" {
@@ -38,10 +34,6 @@ job "database" {
       driver = "docker"
       config {
         image = "postgres:17"
-        #network_mode = "host"
-        #port_map {
-        #  db = 5432
-        #}
         # intended for maintenance
         #command = "/bin/bash"
         #args = [
@@ -68,11 +60,6 @@ job "database" {
       resources {
         cpu = 500
         memory = 512
-        #network {
-        #  port  "db"  {
-        #    static = 5432
-        #  }
-        #}
       }
     }
     restart {
