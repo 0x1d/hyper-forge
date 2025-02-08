@@ -12,7 +12,7 @@ module "nodered_volume" {
 resource "nomad_job" "nodered" {
   jobspec = templatefile("${path.module}/jobs/flows.hcl", {
     nodered_volume_id = "node-red"
-    nodered_image     = "nodered/node-red:4.0.5-22"
+    nodered_image     = "nodered/node-red:4.0.8-22"
   })
   depends_on = [module.nodered_volume]
 }

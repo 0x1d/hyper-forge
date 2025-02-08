@@ -20,6 +20,10 @@ job "flows" {
               destination_name = "postgres"
               local_bind_port = 5432
             }
+            upstreams {
+              destination_name = "emqx-mqtt-tcp"
+              local_bind_port = 1883
+            }
           }
         }
       }
