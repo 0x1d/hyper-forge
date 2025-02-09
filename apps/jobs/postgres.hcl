@@ -44,6 +44,7 @@ job "database" {
       env {
           POSTGRES_USER="${postgres_user}"
           POSTGRES_PASSWORD="${postgres_password}"
+          POSTGRES_HOST_AUTH_METHOD="md5"
           PGDATA="/var/lib/postgresql/data/pgdata"
       }
 

@@ -107,20 +107,32 @@ This is usefull if you want to tear down the system or make changes to the Consu
 
 ## Move Secrets to Vault
 
-After Vault is bootstrapped and unsealed, secrets can now be stored in Vault and loaded through Terraform, e.g.:
-```hcl
-data "vault_kv_secret_v2" "vaultwarden_secrets" {
-  mount = "kv"
-  name  = "apps/vaultwarden"
-}
-```
-
-Secrets are currently stored in this hierarchy:
+After Vault is bootstrapped and unsealed, secrets can now be stored in Vault and loaded through Terraform.
+Secrets are currently stored in this hierarchy, so make sure to set these secrets after `platform` has been provisioned, before deploying `apps`:
 - kv
   - system
     - HCLOUD_TOKEN
     - HCLOUD_DNS_TOKEN
     - INGRESS_AUTH_TOKEN
   - apps
+    - postress
+      - PGADMIN_PASSWORD
+      - POSTGRES_PASSWORD
     - vaultwarden
       - ADMIN_TOKEN
+
+## PostgreSQL Server Security
+
+With the default PostgreSQL server configuration in combination with the service mesh proxy, it is possible to connect to any DB without password, as the DB connection appears to be `local` and therefore trusted.  
+To enforce a password check, modify `pg_hba.conf` to change the authentication method from "trust" to "md5", e.g.:
+
+```
+# TYPE  DATABASE        USER            ADDRESS                 METHOD
+
+# "local" is for Unix domain socket connections only
+local   all             all                                     md5
+# IPv4 local connections:
+host    all             all             127.0.0.1/32            md5
+# IPv6 local connections:
+host    all             all             ::1/128                 md5
+```

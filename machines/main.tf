@@ -18,10 +18,12 @@ terraform {
     }
   }
 }
+
 provider "vault" {
   skip_tls_verify  = true
   skip_child_token = true
 }
+
 provider "proxmox" {
   insecure = true
   tmp_dir  = "/var/tmp"

@@ -1,14 +1,17 @@
 locals {
   postgres = {
     user     = "postgres"
-    password = "postgres"
     database = "postgres"
     volume   = "postgres-volume"
   }
   pgadmin = {
-    email    = "admin@dcentral.systems"
-    password = "password"
+    email = "admin@dcentral.systems"
   }
+}
+
+data "vault_kv_secret_v2" "postgres_secrets" {
+  mount = "kv"
+  name  = "apps/postgres"
 }
 
 module "postgres_volume" {
@@ -25,11 +28,11 @@ module "postgres_volume" {
 resource "nomad_job" "postgres" {
   jobspec = templatefile("${path.module}/jobs/postgres.hcl", {
     postgres_user      = local.postgres.user
-    postgres_password  = local.postgres.password
+    postgres_password  = data.vault_kv_secret_v2.postgres_secrets.data.POSTGRES_PASSWORD
     postgres_volume_id = local.postgres.volume
     postgres_database  = local.postgres.database
     pgadmin_email      = local.pgadmin.email
-    pgadmin_password   = local.pgadmin.password
+    pgadmin_password   = data.vault_kv_secret_v2.postgres_secrets.data.PGADMIN_PASSWORD
   })
   depends_on = [module.postgres_volume]
 }
@@ -48,7 +51,7 @@ resource "nomad_job" "postgres" {
 resource "nomad_job" "metabase" {
   jobspec = templatefile("${path.module}/jobs/metabase.hcl", {
     postgres_user     = local.postgres.user
-    postgres_password = local.postgres.password
+    postgres_password = data.vault_kv_secret_v2.postgres_secrets.data.POSTGRES_PASSWORD
     postgres_host     = "postgres.service.consul"
     tags = templatefile("${path.module}/jobs/traefik_tags.tpl", {
       router        = "metabase"
