@@ -31,7 +31,7 @@ The stack is structured into multiple layers / components:
 - a NFS server
 - a Hetzner Cloud API Key
 - Terraform
-- Ansible
+- Ansiblehcl
 - jq
 
 ## Setup
@@ -114,3 +114,13 @@ data "vault_kv_secret_v2" "vaultwarden_secrets" {
   name  = "apps/vaultwarden"
 }
 ```
+
+Secrets are currently stored in this hierarchy:
+- kv
+  - system
+    - HCLOUD_TOKEN
+    - HCLOUD_DNS_TOKEN
+    - INGRESS_AUTH_TOKEN
+  - apps
+    - vaultwarden
+      - ADMIN_TOKEN
