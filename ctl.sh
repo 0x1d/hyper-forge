@@ -8,9 +8,11 @@ set -e
 ##
 ## machines
 ##   apply            Provision machines
+##   destroy          Destroy machines
 ##
 ## system
-##   apply            Install and configure systems
+##   apply            Generate inventory
+##   bootstrap        Install and configure systems
 ##   install          Install stack on hosts
 ##   configure        Configure hosts
 ##   update           Update packages on hosts
@@ -20,7 +22,8 @@ set -e
 ##   apply            Apply platform services
 ##
 ## network
-##   apply            Apply network configuration
+##   apply            Generate network configuration
+##   configure        Configure network nodes
 ##
 ## apps
 ##   apply            Install apps
@@ -42,12 +45,15 @@ function machines {
 }
 
 function system {
-	function apply {
+	function bootstrap {
 		source .env.machines
-		tf_apply system
+		system apply
 		system install
 		system configure
 		system update
+	}
+	function apply {
+		tf_apply system
 	}
 	function install {
 		ansible_run system install
@@ -72,6 +78,9 @@ function network {
 	function apply {
 		source .env.machines
 		tf_apply network
+	}
+	function configure {
+		network apply
 		ansible_run network configure
 	}
 	function update {

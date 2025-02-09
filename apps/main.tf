@@ -1,4 +1,8 @@
 terraform {
+  backend "consul" {
+    scheme = "http"
+    path   = "terraform/hyper-forge/apps"
+  }
   required_providers {
     nomad = {
       source  = "hashicorp/nomad"
@@ -8,11 +12,19 @@ terraform {
       source  = "hashicorp/consul"
       version = "2.21.0"
     }
+    vault = {
+      source  = "hashicorp/vault"
+      version = "4.3.0"
+    }
   }
 }
 
 provider "nomad" {}
 provider "consul" {}
+provider "vault" {
+  skip_tls_verify  = true
+  skip_child_token = true
+}
 
 locals {
   nfs = {

@@ -18,15 +18,4 @@ resource "consul_service" "kiwix" {
     "traefik.http.routers.kiwix.tls=true",
     "traefik.http.routers.kiwix.tls.certresolver=hetzner"
   ]
-
-  check {
-    check_id        = "service:kiwix"
-    name            = "kiwix health check"
-    status          = "passing"
-    http            = "192.168.1.3:8080"
-    tls_skip_verify = true
-    method          = "GET"
-    interval        = "60s"
-    timeout         = "5s"
-  }
 }
