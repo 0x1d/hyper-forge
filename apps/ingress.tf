@@ -7,9 +7,17 @@ variable "domains" {
 variable "ingress_ip" {
 
 }
+
+# TODO move to Vault
 variable "ingress_auth_token" {
 
 }
+
+data "vault_kv_secret_v2" "vaultwarden_secrets" {
+  mount = "kv"
+  name  = "system/"
+}
+
 
 module "traefik_volume" {
   source = "./volume/"
