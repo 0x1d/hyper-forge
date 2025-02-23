@@ -3,7 +3,8 @@ domains = [
   "nc.dcentral.systems",
   "appsmith.ingress.dcentral.systems",
   "vaultwarden.ingress.dcentral.systems",
-  "kiwix.ingress.dcentral.systems"
+  "kiwix.ingress.dcentral.systems",
+  "owui.ingress.dcentral.systems"
 ]
 machines = {
   servers = [{

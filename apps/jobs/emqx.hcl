@@ -38,7 +38,7 @@ job "emqx" {
       config {
         image        = "busybox:latest"
         command      = "sh"
-        args         = ["-c", "chown -R 1000:1000 /data && chmod 777 /data"]
+        args         = ["-c", "chown -R 1000:1000 /data"]
       }
       resources {
         cpu    = 100

@@ -1,9 +1,5 @@
-variable "domains" {
-
-}
-variable "ingress_ip" {
-
-}
+variable "domains" {}
+variable "ingress_ip" {}
 
 data "vault_kv_secret_v2" "system_secrets" {
   mount = "kv"

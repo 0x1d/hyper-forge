@@ -74,6 +74,8 @@ Set the root token as `VAULT_TOKEN` variable in your `.env`, for the next step w
 ./ctl.sh platform apply
 ```
 
+After the platform has been provisioned, make sure to set all secrets for the apps in Vault, see [Move Secrets to Vault](#move-secrets-to-vault).
+
 6) Install apps on Nomad
 ```shell
 ./ctl.sh apps apply
@@ -136,3 +138,24 @@ host    all             all             127.0.0.1/32            md5
 # IPv6 local connections:
 host    all             all             ::1/128                 md5
 ```
+
+## Troubleshooting
+
+### Bridge Network
+
+In case you encounter the message "missing network" when allocating a task, check if bridge network is enabled on the Nomad client nodes (should look like this):
+```
+lsmod | grep bridge
+
+bridge                421888  1 br_netfilter
+stp                    12288  1 bridge
+llc                    16384  2 bridge,stp
+```
+If this is not the case, try to enable all required modules:
+```
+modprobe bridge
+modprobe br_netfilter
+```
+They should however be enabled anyway through config located in `system/config/client/etc/modules-load.d` or `etc/modules-load.d` on the nodes themselves.  
+  
+You may also consult the Nomad CNI documentation: https://developer.hashicorp.com/nomad/docs/networking/cni#install-cni-reference-plugins

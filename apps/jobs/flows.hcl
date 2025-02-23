@@ -21,7 +21,7 @@ job "flows" {
               local_bind_port = 5432
             }
             upstreams {
-              destination_name = "emqx-mqtt-tcp"
+              destination_name = "mqtt-tcp"
               local_bind_port = 1883
             }
           }
