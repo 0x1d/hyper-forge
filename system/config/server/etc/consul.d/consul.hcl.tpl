@@ -9,6 +9,7 @@ retry_join = ${servers}
 
 addresses {
     http = "0.0.0.0"
+    grpc = "0.0.0.0"
 }
 ui_config {
     enabled = true

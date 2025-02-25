@@ -1,10 +1,6 @@
 domains = [
-  "metabase.ingress.dcentral.systems",
-  "nc.dcentral.systems",
-  "appsmith.ingress.dcentral.systems",
-  "vaultwarden.ingress.dcentral.systems",
-  "kiwix.ingress.dcentral.systems",
-  "owui.ingress.dcentral.systems"
+  "*.ingress.dcentral.systems",
+  "*.k8s.ingress.dcentral.systems"
 ]
 machines = {
   servers = [{
