@@ -1,10 +1,17 @@
 [entryPoints]
     [entryPoints.http]
     address = ":8080"
+    [entryPoints.http.forwardedHeaders]
+      trustedIPs = ["127.0.0.1"]
     [entryPoints.https]
-    address = ":8443"    
+    address = ":8443"
+    [entryPoints.https.forwardedHeaders]
+      trustedIPs = ["127.0.0.1"]
     [entryPoints.traefik]
     address = ":8081"
+
+[serversTransport]
+  insecureSkipVerify = true
 
 [api]
     dashboard = true

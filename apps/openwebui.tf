@@ -12,7 +12,7 @@ module "owui_volume" {
 resource "nomad_job" "owui" {
   jobspec = templatefile("${path.module}/jobs/openwebui.hcl", {
     owui_volume_id = "owui"
-    tags = templatefile("${path.module}/jobs/traefik_tags.tpl", {
+    tags = templatefile("${path.module}/jobs/config/ingress/traefik_tags.tpl", {
       router        = "owui"
       cert_resolver = "hetzner"
       url           = "owui.ingress.dcentral.systems"

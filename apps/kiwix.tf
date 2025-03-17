@@ -16,6 +16,7 @@ resource "consul_service" "kiwix" {
     "traefik.enable=true",
     "traefik.http.routers.kiwix.rule=Host(`kiwix.ingress.dcentral.systems`)",
     "traefik.http.routers.kiwix.tls=true",
-    "traefik.http.routers.kiwix.tls.certresolver=hetzner"
+    "traefik.http.routers.kiwix.tls.certresolver=hetzner",
+    "traefik.http.routers.kiwix.middlewares=authelia@consulcatalog"
   ]
 }

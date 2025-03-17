@@ -53,7 +53,7 @@ resource "nomad_job" "metabase" {
     postgres_user     = local.postgres.user
     postgres_password = data.vault_kv_secret_v2.postgres_secrets.data.POSTGRES_PASSWORD
     postgres_host     = "postgres.service.consul"
-    tags = templatefile("${path.module}/jobs/traefik_tags.tpl", {
+    tags = templatefile("${path.module}/jobs/config/ingress/traefik_tags.tpl", {
       router        = "metabase"
       cert_resolver = "hetzner"
       url           = "metabase.ingress.dcentral.systems"

@@ -3,7 +3,6 @@ data "vault_kv_secret_v2" "vaultwarden_secrets" {
   name  = "apps/vaultwarden"
 }
 
-
 module "vaultwarden_volume" {
   source = "./volume/"
   nfs    = local.nfs
@@ -20,7 +19,7 @@ resource "nomad_job" "vaultwarden" {
     vaultwarden_volume_id   = "vaultwarden"
     vaultwarden_image       = "vaultwarden/server:1.33.1"
     vaultwarden_admin_token = data.vault_kv_secret_v2.vaultwarden_secrets.data.ADMIN_TOKEN
-    tags = templatefile("${path.module}/jobs/traefik_tags.tpl", {
+    tags = templatefile("${path.module}/jobs/config/ingress/traefik_tags.tpl", {
       router        = "vaultwarden"
       cert_resolver = "hetzner"
       url           = "vaultwarden.ingress.dcentral.systems"

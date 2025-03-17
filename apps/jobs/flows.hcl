@@ -64,7 +64,8 @@ job "flows" {
       service {
         name = "node-red"
         port = "http"
-
+        tags = ${tags}
+        
         check {
           type     = "http"
           path     = "/"

@@ -13,6 +13,11 @@ resource "nomad_job" "nodered" {
   jobspec = templatefile("${path.module}/jobs/flows.hcl", {
     nodered_volume_id = "node-red"
     nodered_image     = "nodered/node-red:4.0.8-22"
+    tags = templatefile("${path.module}/jobs/config/ingress/traefik_auth_tags.tpl", {
+      router        = "flows"
+      cert_resolver = "hetzner"
+      url           = "flows.ingress.dcentral.systems"
+    })
   })
   depends_on = [module.nodered_volume]
 }

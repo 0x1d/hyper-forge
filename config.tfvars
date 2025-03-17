@@ -1,6 +1,7 @@
 domains = [
   "*.ingress.dcentral.systems",
-  "*.k8s.ingress.dcentral.systems"
+  "*.k8s.ingress.dcentral.systems",
+  "*.dcentral.systems"
 ]
 machines = {
   servers = [{

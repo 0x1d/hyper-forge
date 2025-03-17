@@ -11,7 +11,7 @@ job "open-webui" {
       }
     }
     service {
-      name = "node-red"
+      name = "owui"
       port = "http"
     }
     volume "owui_data" {
