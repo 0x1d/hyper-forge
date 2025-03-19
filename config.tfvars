@@ -78,7 +78,13 @@ wireguard = {
   server_ip       = "192.168.10.1"
   router_ip       = "192.168.10.2"
   clients = [{
-    name      = "client1"
+    name      = "oppo"
     client_ip = "192.168.10.10/32"
+  },{
+    name      = "pixel"
+    client_ip = "192.168.10.11/32"
+  },{
+    name      = "gpd"
+    client_ip = "192.168.10.12/32"
   }]
 }
