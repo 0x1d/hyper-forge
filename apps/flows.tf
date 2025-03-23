@@ -16,7 +16,7 @@ resource "nomad_job" "nodered" {
     tags = templatefile("${path.module}/jobs/config/ingress/traefik_auth_tags.tpl", {
       router        = "flows"
       cert_resolver = "hetzner"
-      url           = "flows.ingress.dcentral.systems"
+      url           = "flows.dcentral.systems"
     })
   })
   depends_on = [module.nodered_volume]

@@ -25,7 +25,7 @@ resource "nomad_job" "syncthing" {
     tags = templatefile("${path.module}/jobs/config/ingress/traefik_auth_tags.tpl", {
       router        = "syncthing"
       cert_resolver = "hetzner"
-      url           = "sync.ingress.dcentral.systems"
+      url           = "sync.dcentral.systems"
     })
   })
   depends_on = [module.syncthing_data_volume, module.syncthing_config_volume]

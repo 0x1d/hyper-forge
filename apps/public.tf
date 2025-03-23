@@ -4,7 +4,7 @@ resource "nomad_job" "public" {
     tags = templatefile("${path.module}/jobs/config/ingress/traefik_auth_tags.tpl", {
       router        = "public-files"
       cert_resolver = "hetzner"
-      url           = "files.ingress.dcentral.systems"
+      url           = "files.dcentral.systems"
     })
   })
   depends_on = [module.syncthing_data_volume]

@@ -16,7 +16,7 @@ resource "nomad_job" "appsmith" {
     tags = templatefile("${path.module}/jobs/config/ingress/traefik_tags.tpl", {
       router        = "appsmith"
       cert_resolver = "hetzner"
-      url           = "appsmith.ingress.dcentral.systems"
+      url           = "appsmith.dcentral.systems"
     })
   })
   depends_on = [module.appsmith_volume]

@@ -49,7 +49,7 @@ job "desktop" {
         tags = [
           "traefik.enable=true",
           "traefik.http.services.parrotos.loadbalancer.server.scheme=https",
-          "traefik.http.routers.parrot-os.rule=Host(`parrot.ingress.dcentral.systems`)",
+          "traefik.http.routers.parrot-os.rule=Host(`parrot.dcentral.systems`)",
           "traefik.http.routers.parrot-os.service=parrotos",
           "traefik.http.routers.parrot-os.tls=true",
           "traefik.http.routers.parrot-os.tls.certresolver=hetzner",
@@ -100,7 +100,7 @@ job "desktop" {
         tags = [
           "traefik.enable=true",
           "traefik.http.services.debian.loadbalancer.server.scheme=https",
-          "traefik.http.routers.debian.rule=Host(`debian.ingress.dcentral.systems`)",
+          "traefik.http.routers.debian.rule=Host(`debian.dcentral.systems`)",
           "traefik.http.routers.debian.service=debian",
           "traefik.http.routers.debian.tls=true",
           "traefik.http.routers.debian.tls.certresolver=hetzner",

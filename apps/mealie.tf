@@ -15,7 +15,7 @@ resource "nomad_job" "mealie" {
     tags = templatefile("${path.module}/jobs/config/ingress/traefik_tags.tpl", {
       router        = "mealie"
       cert_resolver = "hetzner"
-      url           = "mealie.ingress.dcentral.systems"
+      url           = "mealie.dcentral.systems"
     })
   })
   depends_on = [module.mealie_data_volume]

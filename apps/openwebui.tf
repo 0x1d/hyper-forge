@@ -15,7 +15,7 @@ resource "nomad_job" "owui" {
     tags = templatefile("${path.module}/jobs/config/ingress/traefik_tags.tpl", {
       router        = "owui"
       cert_resolver = "hetzner"
-      url           = "owui.ingress.dcentral.systems"
+      url           = "owui.dcentral.systems"
     })
   })
   depends_on = [module.owui_volume]

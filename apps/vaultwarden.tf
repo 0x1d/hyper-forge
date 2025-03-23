@@ -22,7 +22,7 @@ resource "nomad_job" "vaultwarden" {
     tags = templatefile("${path.module}/jobs/config/ingress/traefik_tags.tpl", {
       router        = "vaultwarden"
       cert_resolver = "hetzner"
-      url           = "vaultwarden.ingress.dcentral.systems"
+      url           = "vaultwarden.dcentral.systems"
     })
   })
   depends_on = [module.vaultwarden_volume]

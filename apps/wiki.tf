@@ -15,7 +15,7 @@ resource "nomad_job" "wiki" {
     tags = templatefile("${path.module}/jobs/config/ingress/traefik_tags.tpl", {
       router        = "bork"
       cert_resolver = "hetzner"
-      url           = "bork.ingress.dcentral.systems"
+      url           = "bork.dcentral.systems"
     })
   })
   depends_on = [module.wiki_family_data_volume]

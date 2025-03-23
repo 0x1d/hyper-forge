@@ -56,7 +56,7 @@ resource "nomad_job" "metabase" {
     tags = templatefile("${path.module}/jobs/config/ingress/traefik_tags.tpl", {
       router        = "metabase"
       cert_resolver = "hetzner"
-      url           = "metabase.ingress.dcentral.systems"
+      url           = "metabase.dcentral.systems"
     })
   })
   depends_on = [nomad_job.postgres]

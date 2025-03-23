@@ -90,7 +90,7 @@ job "authelia" {
           default_policy: deny
           rules:
             # Rules applied to everyone
-            - domain: "*.ingress.dcentral.systems"
+            - domain: "*.dcentral.systems"
               policy: one_factor
               subject:
                - "group:users"
