@@ -21,7 +21,7 @@ job "drift" {
       }
       resources {
         cpu    = 2000
-        memory = 1024
+        memory = 2048
       }
       template {
         data = <<-EOF
