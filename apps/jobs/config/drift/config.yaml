@@ -72,13 +72,13 @@ global:
 # Bot specific configs are below
 enabledBots:
   # Perp order filler bot
-  - filler
+  - fillerLite
 
   # Spot order filler bot
-  - spotFiller
+  #- spotFiller
 
   # Trigger bot (triggers trigger orders)
-  - trigger
+  #- trigger
   
   # Liquidator bot, liquidates unhealthy positions by taking over the risk (caution, you should manage risk here)
   # - liquidator

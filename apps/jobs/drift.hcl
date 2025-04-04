@@ -2,6 +2,7 @@ job "drift" {
   datacenters = ["terra"]
   type = "service"
   group "keeper" {
+    count = 4
     max_client_disconnect  = "720h"
     
     task "bot" {
@@ -18,10 +19,11 @@ job "drift" {
         image = "wirelos/drift-keeper:mainnet-beta"
         command = "node"
         args = [ "./lib/index.js", "--config-file=/local/config.yaml"]
+        force_pull = true
       }
       resources {
-        cpu    = 2000
-        memory = 2048
+        cpu    = 500
+        memory = 500
       }
       template {
         data = <<-EOF
