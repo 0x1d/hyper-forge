@@ -1,8 +1,34 @@
 job "drift" {
   datacenters = ["terra"]
   type = "service"
+  group "metrics" {
+    network {
+      port  "http"{
+        to = 3000
+      }
+    }
+    task "metrics" {
+      driver = "docker"
+      env {
+        PRIVATE_KEY = "${bot_private_key}"
+        RPC_ENDPOINT = "${rpc_endpoint}"
+      }
+      config {
+        image = "wirelos/drift-metrics"
+        ports = ["http"]
+      }
+      resources {
+        cpu    = 200
+        memory = 200
+      }
+      service {
+        name = "drift-metrics"
+        port = "http"
+      }
+    }
+  }
   group "keeper" {
-    count = 4
+    count = 5
     max_client_disconnect  = "720h"
     
     task "bot" {
