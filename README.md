@@ -9,7 +9,7 @@ Hyper-Forge is an opinionated homelab stack with all the funky stuff:
 - Network Storage: NFS
 - Service Discovery: Consul
 - Secrets Management: Vault
-- Identity and Access Management: TBD
+- Identity and Access Management: LDAP, Authelia
 - Ingress & Load Balancing: Traeffik
 - Virtual Private Network: Wireguard
 - Monitoring: Prometheus, Grafana
